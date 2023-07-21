@@ -14,6 +14,19 @@ def extract_pdf_metadata(file_path):
         # Extract Producer and Creator information
         metadata["Producer"] = doc_info.get("/Producer", None)
         metadata["Creator"] = doc_info.get("/Creator", None)
+        metadata["PageCount"] = len(pdf_reader.pages)
+
+        # Extract PageLayout and PageMode
+        trailer = pdf_reader.trailer
+        if "/PageLayout" in trailer:
+            metadata["PageLayout"] = trailer["/PageLayout"]
+        else:
+            metadata["PageLayout"] = None
+
+        if "/PageMode" in trailer:
+            metadata["PageMode"] = trailer["/PageMode"]
+        else:
+            metadata["PageMode"] = None
 
     return metadata
 
