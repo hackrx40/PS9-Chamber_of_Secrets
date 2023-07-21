@@ -39,21 +39,41 @@ def is_metadata_suspicious(metadata):
             return True
 
     # Examine the source information for unusual patterns
-    author = metadata.get("Author", None)
-    subject = metadata.get("Subject", None)
-    if author and subject:
-        if author.lower() not in subject.lower() and subject.lower() not in author.lower():
+    producer = metadata.get("Producer", None)
+    creator = metadata.get("Creator", None)
+    pdf_editing_tool_names = [
+    "adobe",
+    "nitro",
+    "foxit",
+    "pdf-xchange",
+    "infix",
+    "phantompdf",
+    "ilovepdf",
+    "smallpdf",
+    "sejda",
+    "pdfescape",
+    "pdfsam",
+    "pdfpen",
+    "pdf24",
+    "masterpdf",
+    "pdfexpert",
+    "pdfcandy",
+    "pdfmate",
+    "pdfpro",
+    "pdfill",
+    "pdfshaper"
+]
+    for tool_name in pdf_editing_tool_names:
+        if producer and tool_name.lower() in producer.lower():
             return True
-
-    # Verify if essential metadata fields are missing or empty
-    if not metadata.get("Title") or not metadata.get("Author"):
-        return True
+        if creator and tool_name.lower() in creator.lower():
+            return True
 
     # If none of the suspicious conditions are met, return False
     return False
 
 if __name__ == "__main__":
-    pdf_file_path = r"C:\Users\Prathmesh\Downloads\Amazon 2 F sign.pdf"
+    pdf_file_path = r"C:\Users\Prathmesh\Downloads\Forgery document use case\Forgery document use case\Hackathon\Health doc\INVGR_31-08-2022 001311_179006254.pdf"
 
     metadata = extract_pdf_metadata(pdf_file_path)
 
